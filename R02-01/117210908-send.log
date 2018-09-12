@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE log SYSTEM "logger.dtd">
+<log>
+<record>
+  <date>2018-09-10T16:10:46.491-0300</date>
+  <logger>HERCULES RODRIGUES ANSELMO</logger>
+  <level>FINE</level>
+  <message>File 117210908-HERCULES RODRIGUES ANSELMO.zip was received. It was sent by HERCULES RODRIGUES ANSELMO from IP 150.165.42.127</message>
+</record>
+</log>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE log SYSTEM "logger.dtd">
+<log>
+<record>
+  <date>2018-09-11T16:36:15.421-0300</date>
+  <logger>HERCULES RODRIGUES ANSELMO</logger>
+  <level>FINE</level>
+  <message>File 117210908-HERCULES RODRIGUES ANSELMO.zip was received. It was sent by HERCULES RODRIGUES ANSELMO from IP 150.165.74.105</message>
+</record>
+</log>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE log SYSTEM "logger.dtd">
+<log>
+<record>
+  <date>2018-09-12T09:51:03.176-0300</date>
+  <logger>HERCULES RODRIGUES ANSELMO</logger>
+  <level>FINE</level>
+  <message>File 117210908-HERCULES RODRIGUES ANSELMO.zip was received. It was sent by HERCULES RODRIGUES ANSELMO from IP 150.165.74.124</message>
+</record>
+</log>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE log SYSTEM "logger.dtd">
+<log>
+<record>
+  <date>2018-09-12T09:53:50.767-0300</date>
+  <logger>HERCULES RODRIGUES ANSELMO</logger>
+  <level>FINE</level>
+  <message>File 117210908-HERCULES RODRIGUES ANSELMO.zip was received. It was sent by HERCULES RODRIGUES ANSELMO from IP 150.165.74.124</message>
+</record>

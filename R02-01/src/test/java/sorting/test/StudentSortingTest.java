@@ -8,6 +8,7 @@ import org.junit.Test;
 
 import sorting.AbstractSorting;
 import sorting.divideAndConquer.MergeSort;
+import sorting.divideAndConquer.QuickSort;
 
 public class StudentSortingTest {
 
@@ -39,7 +40,8 @@ public class StudentSortingTest {
 	private void getImplementation() {
 		// TODO O aluno deve instanciar sua implementação abaixo ao invés de
 		// null
-		this.implementation = new MergeSort<>();
+		//this.implementation = new MergeSort<>();
+		this.implementation = new QuickSort<>();
 	}
 
 	public void populaVetorTamanhoPar(Integer[] arrayPadrao) {

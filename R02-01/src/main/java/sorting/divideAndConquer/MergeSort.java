@@ -1,6 +1,5 @@
 package sorting.divideAndConquer;
 
-import java.lang.reflect.Array;
 import java.util.Arrays;
 
 import sorting.AbstractSorting;
@@ -13,52 +12,49 @@ import sorting.AbstractSorting;
  */
 public class MergeSort<T extends Comparable<T>> extends AbstractSorting<T> {
 
-	
-	@Override
-	public void sort(T[] array, int leftIndex, int rightIndex) {
-		    int i, j, k, metadeTamanho;
-		    
-		    if(leftIndex >= rightIndex) return;
-		    metadeTamanho = (leftIndex + rightIndex ) / 2;
+   @Override
+   public void sort(T[] array, int leftIndex, int rightIndex) {
+      int i, j, k, metadeTamanho;
 
-		    sort(array, leftIndex, metadeTamanho);
-		    sort(array, metadeTamanho + 1, rightIndex);
+      if (leftIndex >= rightIndex)
+         return;
+      metadeTamanho = (leftIndex + rightIndex) / 2;
 
-		    i = leftIndex;
-		    j = metadeTamanho + 1;
-		    k = 0;
-			//T[] vetorTemp = (T[]) new Object[rightIndex - leftIndex + 1];
-			T[] vetorTemp = Arrays.copyOfRange(array, leftIndex, rightIndex + 1);
+      sort(array, leftIndex, metadeTamanho);
+      sort(array, metadeTamanho + 1, rightIndex);
 
-		    while(i < metadeTamanho + 1 || j  < rightIndex + 1) { // O laco so vai quebrar quando i e j forem maiores que suas extremidades
-		    	if (i == metadeTamanho + 1 ) { 
-		            vetorTemp[k] = array[j];
-		            j++;
-		            k++;
-		        }
-		        else {
-		            if (j == rightIndex + 1) {
-		                vetorTemp[k] = array[i];
-		                i++;
-		                k++;
-		            }
-		            else {
-		                if (array[i].compareTo(array[j]) < 0) {
-		                    vetorTemp[k] = array[i];
-		                    i++;
-		                    k++;
-		                }
-		                else {
-		                    vetorTemp[k] = array[j];
-		                    j++;
-		                    k++;
-		                }
-		            }
-		        }
+      i = leftIndex;
+      j = metadeTamanho + 1;
+      k = 0;
+      T[] vetorTemp = Arrays.copyOfRange(array, leftIndex, rightIndex + 1);
 
-		    }
-		    for(i = leftIndex; i <= rightIndex; i++) {
-		        array[i] = vetorTemp[i - leftIndex];
-		    }
-		}
-	}
+      // O laco so vai quebrar quando i e j forem maiores que suas extremidades
+      while (i < metadeTamanho + 1 || j < rightIndex + 1) {
+         if (i == metadeTamanho + 1) {
+            vetorTemp[k] = array[j];
+            j++;
+            k++;
+         } else {
+            if (j == rightIndex + 1) {
+               vetorTemp[k] = array[i];
+               i++;
+               k++;
+            } else {
+               if (array[i].compareTo(array[j]) < 0) {
+                  vetorTemp[k] = array[i];
+                  i++;
+                  k++;
+               } else {
+                  vetorTemp[k] = array[j];
+                  j++;
+                  k++;
+               }
+            }
+         }
+
+      }
+      for (i = leftIndex; i <= rightIndex; i++) {
+         array[i] = vetorTemp[i - leftIndex];
+      }
+   }
+}
