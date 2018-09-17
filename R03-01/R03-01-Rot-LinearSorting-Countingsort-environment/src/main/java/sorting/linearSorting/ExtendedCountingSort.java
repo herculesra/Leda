@@ -26,7 +26,7 @@ public class ExtendedCountingSort extends AbstractSorting<Integer> {
 	}
 
 	private void extendCountingSort(Integer[] A, int[] B, int menor, int maior, int leftIndex, int rightIndex) {
-		// Array de contadores com tamanho mínimo
+		// Array de contadores com tamanho mï¿½nimo
 		int[] C = new int[maior - menor + 1];
 		
 		// contagem dos elementos
@@ -48,8 +48,8 @@ public class ExtendedCountingSort extends AbstractSorting<Integer> {
 	
 	// Metodo resposavel por encontrar o menor e maior elemento do array.
 	private void maiorEmenorValor(Integer[] array, int leftIndex, int rightIndex) {
-		menor = array[0];
-		maior = array[0];
+		menor = array[leftIndex];
+		maior = array[rightIndex];
 		for(int i = leftIndex; i <= rightIndex; i++) {
 			if(menor > array[i]) {
 				menor = array[i];
