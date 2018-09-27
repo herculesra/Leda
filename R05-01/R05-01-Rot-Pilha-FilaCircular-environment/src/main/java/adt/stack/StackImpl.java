@@ -12,9 +12,12 @@ public class StackImpl<T> implements Stack<T> {
 	}
 
 	@Override
-	public T top() {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("Not implemented yet!");
+	public T top(){
+		T result = null;
+		if(top != -1) {
+			result = array[top];
+		}
+		return result;
 	}
 
 	@Override
