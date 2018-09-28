@@ -6,42 +6,74 @@ public class CircularQueue<T> implements Queue<T> {
 	private int tail;
 	private int head;
 	private int elements;
+	private boolean recebeu;
 
 	public CircularQueue(int size) {
 		array = (T[]) new Object[size];
 		head = -1;
 		tail = -1;
 		elements = 0;
+		recebeu = false;
 	}
 
 	@Override
 	public void enqueue(T element) throws QueueOverflowException {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("Not implemented yet!");
+		if(!isFull()) {
+			array[++ tail] = element;
+			elements ++;
+			if(tail == array.length -1) {
+				tail = (tail % (array.length -1)) - 1;
+			}
+			if(!recebeu) { // So irá entrar aqui uma unica vez em todo o procedimento da fila. 
+							//Caso inicial quando adiciona o primeiro elemento
+				head ++;
+				recebeu = true;
+			}
+		}else {
+			throw new QueueOverflowException();
+		}
 	}
 
 	@Override
 	public T dequeue() throws QueueUnderflowException {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("Not implemented yet!");
+		T result = array[head];
+		if(!isEmpty()) {
+			elements --;
+			if(head == array.length -1) {
+				head = (head % (array.length -1));
+			}else {
+				head ++;
+			}
+		}else {
+			throw new QueueUnderflowException();
+		}
+		return result;
 	}
 
 	@Override
 	public T head() {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("Not implemented yet!");
+		T result = null;
+		if(!isEmpty()) {
+			result = array[head];
+		}
+		return result;
 	}
 
 	@Override
 	public boolean isEmpty() {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("Not implemented yet!");
+		return elements == 0;
 	}
 
 	@Override
 	public boolean isFull() {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("Not implemented yet!");
+		boolean result = false;
+		if(tail == array.length -1 && head == 0) { // caso em que a cabeca esta no comeco e o tail chegou no tamanho total da fila
+			result = true;
+		}
+		if(tail + 1 == head) { // caso quando a fila esta cheia onde o proximo elemento e a cabeca
+			result = true;
+		}
+		return result;
 	}
 
 }
