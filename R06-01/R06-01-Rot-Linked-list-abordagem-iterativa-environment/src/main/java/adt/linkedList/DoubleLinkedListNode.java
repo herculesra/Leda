@@ -1,6 +1,7 @@
 package adt.linkedList;
 
 public class DoubleLinkedListNode<T> extends SingleLinkedListNode<T> {
+	
 	protected DoubleLinkedListNode<T> previous;
 
 	public DoubleLinkedListNode() {
