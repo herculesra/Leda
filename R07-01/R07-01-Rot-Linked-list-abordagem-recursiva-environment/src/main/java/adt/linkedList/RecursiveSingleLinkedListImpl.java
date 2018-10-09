@@ -1,5 +1,6 @@
 package adt.linkedList;
 
+
 public class RecursiveSingleLinkedListImpl<T> implements LinkedList<T> {
 
 	protected T data;
@@ -70,15 +71,15 @@ public class RecursiveSingleLinkedListImpl<T> implements LinkedList<T> {
 		int size = size();
 		T[] result = (T[]) new Object[size];
 		if(size > 0) {
-			paraArray(result, this, 0);
+			toArray(result, this, 0);
 		}
 		return result;
 	}
 	
-	public void paraArray(T[] result, RecursiveSingleLinkedListImpl<T> next, int index) {
+	public void toArray(T[] result, RecursiveSingleLinkedListImpl<T> next, int index) {
 		if(!next.isEmpty()) {
 			result[index] = next.data;
-			paraArray(result, next.next, ++index);
+			toArray(result, next.next, ++index);
 		}
 	}
 
@@ -97,5 +98,4 @@ public class RecursiveSingleLinkedListImpl<T> implements LinkedList<T> {
 	public void setNext(RecursiveSingleLinkedListImpl<T> next) {
 		this.next = next;
 	}
-
 }
