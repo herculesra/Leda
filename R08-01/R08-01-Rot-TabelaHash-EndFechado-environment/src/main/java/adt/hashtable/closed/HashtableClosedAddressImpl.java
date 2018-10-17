@@ -1,8 +1,12 @@
 package adt.hashtable.closed;
 
+import java.util.LinkedList;
+
 import adt.hashtable.hashfunction.HashFunction;
+import adt.hashtable.hashfunction.HashFunctionClosedAddress;
 import adt.hashtable.hashfunction.HashFunctionClosedAddressMethod;
 import adt.hashtable.hashfunction.HashFunctionFactory;
+import util.Util;
 
 public class HashtableClosedAddressImpl<T> extends AbstractHashtableClosedAddress<T> {
 
@@ -37,6 +41,7 @@ public class HashtableClosedAddressImpl<T> extends AbstractHashtableClosedAddres
          // above
       }
       initiateInternalTable(realSize);
+      iniciandoTabelaComColecoesInternas(realSize);
       HashFunction function = HashFunctionFactory.createHashFunction(method, realSize);
       this.hashFunction = function;
    }
@@ -49,33 +54,80 @@ public class HashtableClosedAddressImpl<T> extends AbstractHashtableClosedAddres
     * You can use the method Util.isPrime to check if a number is
     * prime.
     */
+   
+  
+   
+   
    int getPrimeAbove(int number) {
-      // TODO Auto-generated method stub
-      throw new UnsupportedOperationException("Not implemented yet!");
+      int result = number + 1;
+      while(!Util.isPrime(result)) {
+    	  ++ result;
+      }
+      return result;
    }
 
    @Override
    public void insert(T element) {
-      // TODO Auto-generated method stub
-      throw new UnsupportedOperationException("Not implemented yet!");
+       if (!isFull() && element != null) {
+           LinkedList<T> listTable = pegarListaPorElemento(element);
+           if (!listTable.isEmpty()) {
+               this.COLLISIONS++;
+           }
+           listTable.add(element);
+           this.elements++;
+       }
    }
+   
+   
 
    @Override
    public void remove(T element) {
-      // TODO Auto-generated method stub
-      throw new UnsupportedOperationException("Not implemented yet!");
+       LinkedList<T> listTable = pegarListaPorElemento(element);
+       if(listTable.contains(element)){
+           listTable.remove(element);
+           this.elements--;
+       }
    }
 
    @Override
    public T search(T element) {
-      // TODO Auto-generated method stub
-      throw new UnsupportedOperationException("Not implemented yet!");
+       T result = null;
+       if (!isEmpty() && element != null) {
+           LinkedList<T> listTable = pegarListaPorElemento(element);
+           for (T currentElement : listTable) {
+               if (element.equals(currentElement)) {
+                   result = currentElement;
+               }
+           }
+       }
+
+       return result;
    }
 
    @Override
    public int indexOf(T element) {
-      // TODO Auto-generated method stub
-      throw new UnsupportedOperationException("Not implemented yet!");
-   }
+       int result = -1;
+       if(pegarListaPorElemento(element).contains(element)){
+           result = getHashFunction().hash(element);
+       }
 
+       return result;
+   }
+   
+   @SuppressWarnings("unchecked")
+   private LinkedList<T> pegarListaPorElemento(T element) {
+       int index = getHashFunction().hash(element);
+       return (LinkedList<T>) table[index];
+   }
+   
+   public void iniciandoTabelaComColecoesInternas(int realSize) {
+	   for(int i = 0; i < realSize; i++) {
+		   this.table[i] = new LinkedList<T>();
+	   }
+   }
+   
+   @Override
+   public HashFunctionClosedAddress<T> getHashFunction() {
+       return (HashFunctionClosedAddress<T>) super.getHashFunction();
+   }
 }
