@@ -1,5 +1,7 @@
 package adt.linkedList;
 
+import java.util.Arrays;
+
 public class SingleLinkedListImpl<T> implements LinkedList<T> {
 
    protected SingleLinkedListNode<T> head;
@@ -89,5 +91,45 @@ public class SingleLinkedListImpl<T> implements LinkedList<T> {
    public void setHead(SingleLinkedListNode<T> head) {
       this.head = head;
    }
+   
+   public void swap(T elem1, T elem2) {
+	   if(elem1 != null && elem2 != null && !isEmpty()) {
+		   T elementAux = elem1;
+		   boolean achou1 = false, achou2 = false;
+		   SingleLinkedListNode<T> aux1 = this.head;
+		   
+		   while(!achou1 || !achou2) {
+			   
+			   if(aux1.data.equals(elem1)) {
+				   achou1 = true;
+			   }else{
+				   if(aux1.data.equals(elem2)) {
+					   achou2 = true;
+				   }
+			   }
+			   if(!achou1) {
+				   head = head.next;
+			   }
+			   if(!achou2) {
+				   aux1 = aux1.next;
+			   }
+		   }
+		   
+		   if(achou1 && achou2) {
+			   head.data = aux1.data;
+			   aux1.data = elementAux;
+		   } 
+	   }
+   }
+   public static void main(String[] args) {
+	SingleLinkedListImpl<Integer> myList = new SingleLinkedListImpl<>();
+	myList.insert(10);
+	myList.insert(30);
+	myList.insert(2);
+	myList.insert(20);
+	myList.insert(5);
+	myList.swap(10, 20);
+	System.out.println(Arrays.toString(myList.toArray()));
+}
 
 }
