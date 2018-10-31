@@ -1,5 +1,7 @@
 package adt.bst;
 
+import java.util.Arrays;
+
 import adt.bt.BTNode;
 
 public class BSTImpl<T extends Comparable<T>> implements BST<T> {
@@ -57,31 +59,46 @@ public class BSTImpl<T extends Comparable<T>> implements BST<T> {
 	@Override
 	public void insert(T element) {
 		if(element != null) {
-			insert(element, root);
+			if(this.isEmpty()) {
+				this.root.setData(element);
+				this.root.setParent(null);
+				this.root.setLeft(new BSTNode<T>());
+				this.root.setRight(new BSTNode<T>());
+			}else {
+				insert(element, root);
+			}
 		}
 	}
 	
 	private void insert(T element, BSTNode<T> node) {
 		if(element.compareTo(node.getData()) < 0) {
 			if(node.getLeft().isEmpty()) {
-				node.setLeft(createNode(element, node));
+				node.getLeft().setData(element);
+				node.getLeft().setLeft(new BSTNode<T>());
+				node.getLeft().setParent(node);
+				node.getLeft().setRight(new BSTNode<T>());
 			}else {
 				insert(element, (BSTNode<T>) node.getLeft());
 			}
 		}else if(element.compareTo(node.getData()) > 0) {
 			if(node.getRight().isEmpty()){
-				node.setRight(createNode(element, node));
+				node.getRight().setData(element);
+				node.getRight().setLeft(new BSTNode<T>());
+				node.getRight().setParent(node);
+				node.getRight().setRight(new BSTNode<T>());
+			}else {
+				insert(element, (BSTNode<T>) node.getRight());
 			}
 		}
 	}
 	
-	@SuppressWarnings("unchecked")
+
 	private BSTNode<T> createNode(T element, BSTNode<T> node){
-		BSTNode<T> newNode = new BSTNode.Builder<T>()
+		BSTNode<T> newNode = (BSTNode<T>) new BSTNode.Builder<T>()
 				.data(element)
-				.left( new BSTNode<>())
+				.left((BSTNode<T>) new BSTNode<>())
 				.parent(node)
-				.right( new BSTNode<>())
+				.right((BSTNode<T>) new BSTNode<>())
 				.build();
 		
 		return newNode;
@@ -220,7 +237,7 @@ public class BSTImpl<T extends Comparable<T>> implements BST<T> {
 	@SuppressWarnings("unchecked")
 	@Override
 	public T[] preOrder() {
-		T[] array = (T[]) new Object[this.size()];
+		T[] array = (T[]) new Comparable[this.size()];
 		preOrder(root, array, 0);
 		return array;
 	}
@@ -254,15 +271,16 @@ public class BSTImpl<T extends Comparable<T>> implements BST<T> {
 	@SuppressWarnings("unchecked")
 	@Override
 	public T[] postOrder() {
-		T[] array = (T[]) new Object[this.size()];
-		postOrder(root, array, 0);
+		T[] array = (T[]) new Comparable[this.size()];
+		int index = 0;
+		postOrder(root, array, index);
 		return array;
 	}
 
 	private void postOrder(BSTNode<T> node, T[] array, int i) {
 		if(!node.isEmpty()) {
-			preOrder((BSTNode<T>) node.getLeft(), array, i++);
-			preOrder((BSTNode<T>)node.getRight(), array, i++);
+			postOrder((BSTNode<T>) node.getLeft(), array, ++i);
+			postOrder((BSTNode<T>)node.getRight(), array, ++i);
 			array[i] = node.getData();
 		}
 	}
@@ -284,6 +302,15 @@ public class BSTImpl<T extends Comparable<T>> implements BST<T> {
 					+ size((BSTNode<T>) node.getRight());
 		}
 		return result;
+	}
+	
+	public static void main(String[] args) {
+		BSTImpl<Integer> tree = new BSTImpl<>();
+		tree.insert(50);
+		tree.insert(100);
+		System.out.println(Arrays.toString(tree.preOrder()));
+		System.out.println(tree.size());
+		
 	}
 
 }
