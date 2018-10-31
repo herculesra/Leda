@@ -93,8 +93,7 @@ public class SingleLinkedListImpl<T> implements LinkedList<T> {
    }
    
    public void swap(T elem1, T elem2) {
-	   if(elem1 != null && elem2 != null && !isEmpty()) {
-		   T elementAux = elem1;
+	   if(elem1 != null && elem2 != null && !isEmpty()) {   
 		   boolean achou1 = false, achou2 = false;
 		   SingleLinkedListNode<T> aux1 = this.head;
 		   
@@ -117,19 +116,8 @@ public class SingleLinkedListImpl<T> implements LinkedList<T> {
 		   
 		   if(achou1 && achou2) {
 			   head.data = aux1.data;
-			   aux1.data = elementAux;
+			   aux1.data = elem1;
 		   } 
 	   }
    }
-   public static void main(String[] args) {
-	SingleLinkedListImpl<Integer> myList = new SingleLinkedListImpl<>();
-	myList.insert(10);
-	myList.insert(30);
-	myList.insert(2);
-	myList.insert(20);
-	myList.insert(5);
-	myList.swap(10, 20);
-	System.out.println(Arrays.toString(myList.toArray()));
-}
-
 }
