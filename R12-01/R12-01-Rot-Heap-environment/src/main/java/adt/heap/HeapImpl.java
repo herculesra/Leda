@@ -84,24 +84,26 @@ public class HeapImpl<T extends Comparable<T>> implements Heap<T> {
     * (comparados usando o comparator) elementos na parte de cima da heap.
     */
    private void heapify(int position) {
-      int l, r, largest;
+      int l, r, largest, size;
       l = this.left(position);
       r = this.right(position);
+      size = size();
       
-      if(l <= size() && comparator.compare(heap[l], heap[position]) > 0) {
+      if(l <= size  && comparator.compare(heap[l], heap[position]) > 0) {
     	  largest = l;
       }else {
     	  largest = position;
       }
-      if(r <= size() && comparator.compare(heap[r], heap[position]) > 0) {
-    	  largest = r;
+      
+      if(r <= size && comparator.compare(heap[r], heap[position]) > 0) {
+    	  if(comparator.compare(heap[l], heap[r]) < 0) {
+    		  largest = r;
+    	  }  
       }
       if(largest != position) {
-    	  Util.swap(getHeap(), position, largest); // falta terminar
-    	  
-      }
-      
-      
+    	  Util.swap(getHeap(), position, largest); 
+    	  heapify(largest); 
+      }  
    }
 
    @Override
@@ -120,7 +122,11 @@ public class HeapImpl<T extends Comparable<T>> implements Heap<T> {
       // TODO Auto-generated method stub
       throw new UnsupportedOperationException("Not implemented yet!");
    }
-
+   
+   //Só relembrando que o método extractRoot decrementa o index (guarda a posicao do ultimo elemento valido da heap) quando remove um elemento da Heap. Entretanto, 
+   //vamos convencionar que voces antes de decrementar index, setam a ultima posicao do array interno da heap para null. 
+   //Isso evitará problemas com o toArray fornecido para voces. 
+   
    @Override
    public T extractRootElement() {
       // TODO Auto-generated method stub
