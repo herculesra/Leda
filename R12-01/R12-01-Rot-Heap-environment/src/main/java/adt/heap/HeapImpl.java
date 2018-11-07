@@ -2,6 +2,7 @@ package adt.heap;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Comparator;
 
 import util.Util;
@@ -108,29 +109,63 @@ public class HeapImpl<T extends Comparable<T>> implements Heap<T> {
 
    @Override
    public void insert(T element) {
-      // ESSE CODIGO E PARA A HEAP CRESCER SE FOR PRECISO. NAO MODIFIQUE
-      if (index == heap.length - 1) {
-         heap = Arrays.copyOf(heap, heap.length + INCREASING_FACTOR);
-      }
-      // /////////////////////////////////////////////////////////////////
-      // TODO Implemente a insercao na heap aqui.
-      throw new UnsupportedOperationException("Not implemented yet!");
+	  if(element != null) {
+		  index++;
+		  // ESSE CODIGO E PARA A HEAP CRESCER SE FOR PRECISO. NAO MODIFIQUE
+		  if (index == heap.length - 1) {
+			  heap = Arrays.copyOf(heap, heap.length + INCREASING_FACTOR);
+		  }
+		  int position = index;
+	        while (position > 0 && comparator.compare(heap[parent(position)], element) < 0) {
+	            heap[position] = heap[parent(position)];
+	            position = parent(position);
+	        }
+	        heap[position] = element;
+	  }
    }
 
    @Override
    public void buildHeap(T[] array) {
-      // TODO Auto-generated method stub
-      throw new UnsupportedOperationException("Not implemented yet!");
+	   cleanHeap();
+	   transferElementArrayToHeap(array);
+       for (int i = index / 2; i >= 0; i--) {
+           heapify(i);
+       }
    }
    
-   //Só relembrando que o método extractRoot decrementa o index (guarda a posicao do ultimo elemento valido da heap) quando remove um elemento da Heap. Entretanto, 
-   //vamos convencionar que voces antes de decrementar index, setam a ultima posicao do array interno da heap para null. 
-   //Isso evitará problemas com o toArray fornecido para voces. 
+   private void cleanHeap() {
+	   for(T e : heap) {
+		   e = null;
+	   }
+   }
+   
+   private void transferElementArrayToHeap(T[] array) {
+	   int i = 0;
+	   index = -1;
+	   if(array.length > heap.length) {
+		   heap = Arrays.copyOf(heap, heap.length + INCREASING_FACTOR);
+	   }
+	   for(T e: array) {
+		   if(e != null) {
+			   heap[i] = e;
+			   index++;
+			   i++;  
+		   }
+	   }
+   }
    
    @Override
    public T extractRootElement() {
-      // TODO Auto-generated method stub
-      throw new UnsupportedOperationException("Not implemented yet!");
+      T result = null;
+      if(size() > 0) {
+    	  result = heap[0];
+          heap[0] = heap[index];
+          heap[index] = null;
+          index--;
+          heapify(0);
+      }
+      
+      return result;
    }
 
    @Override
@@ -144,8 +179,24 @@ public class HeapImpl<T extends Comparable<T>> implements Heap<T> {
 
    @Override
    public T[] heapsort(T[] array) {
-      // TODO Auto-generated method stub
-      throw new UnsupportedOperationException("Not implemented yet!");
+       T[] copy = null;
+       if (array != null) {
+           copy = makeArrayOfComparable(array.length -1);
+           buildHeap(array);
+           for (int i = 0; i < array.length; i++) {
+               copy[i] = extractRootElement();
+           }
+           if (array.length - 1 >= 0 && copy[array.length - 1].compareTo(copy[0]) < 0) {
+               Collections.reverse(Arrays.asList(copy));
+           }
+       }
+       return copy;
+   }
+   
+   private T[] makeArrayOfComparable(int size) {
+	      @SuppressWarnings("unchecked")
+	      T[] array = (T[]) new Comparable[size];
+	      return array;
    }
 
    @Override
