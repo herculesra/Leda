@@ -85,26 +85,20 @@ public class HeapImpl<T extends Comparable<T>> implements Heap<T> {
     * (comparados usando o comparator) elementos na parte de cima da heap.
     */
    private void heapify(int position) {
-      int l, r, largest, size;
-      l = this.left(position);
-      r = this.right(position);
-      size = size();
-      
-      if(l <= size  && comparator.compare(heap[l], heap[position]) > 0) {
-    	  largest = l;
-      }else {
-    	  largest = position;
-      }
-      
-      if(r <= size && comparator.compare(heap[r], heap[position]) > 0) {
-    	  if(comparator.compare(heap[l], heap[r]) < 0) {
-    		  largest = r;
-    	  }  
-      }
-      if(largest != position) {
-    	  Util.swap(getHeap(), position, largest); 
-    	  heapify(largest); 
-      }  
+	   int left = left(position);
+       int right = right(position);
+       int largest = position;
+       if (left < size() && comparator.compare(heap[left], heap[position]) > 0) {
+           largest = left;
+       }
+       if (right < size() && comparator.compare(heap[right], heap[largest]) > 0) {
+           largest = right;
+       }
+
+       if (largest != position) {
+           Util.swap(heap, largest, position);
+           heapify(largest);
+       }
    }
 
    @Override
@@ -157,11 +151,11 @@ public class HeapImpl<T extends Comparable<T>> implements Heap<T> {
    @Override
    public T extractRootElement() {
       T result = null;
-      if(size() > 0) {
+      if(!this.isEmpty()) {
     	  result = heap[0];
           heap[0] = heap[index];
           heap[index] = null;
-          index--;
+          this.index--;
           heapify(0);
       }
       
@@ -181,7 +175,7 @@ public class HeapImpl<T extends Comparable<T>> implements Heap<T> {
    public T[] heapsort(T[] array) {
        T[] copy = null;
        if (array != null) {
-           copy = makeArrayOfComparable(array.length -1);
+           copy = makeArrayOfComparable(array.length);
            buildHeap(array);
            for (int i = 0; i < array.length; i++) {
                copy[i] = extractRootElement();
