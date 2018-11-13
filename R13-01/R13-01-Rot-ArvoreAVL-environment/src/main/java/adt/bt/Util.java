@@ -17,7 +17,7 @@ public class Util {
 		if(!pivot.getLeft().isEmpty()){
 			aux.setRight(pivot.getLeft());
 		}else {
-			BTNode<T> nil = new BTNode<>();
+			BSTNode<T> nil = new BSTNode<>();
 			nil.setParent(aux);
 			aux.setRight(nil);
 		}
@@ -37,9 +37,9 @@ public class Util {
 		pivot.setParent((BSTNode<T>) node.getParent());
 		BSTNode<T> aux = node;
 		if(!pivot.getRight().isEmpty()) {
-			aux.setLeft(pivot.getRight());			
+			aux.setLeft((BSTNode<T>) pivot.getRight());			
 		}else {
-			BTNode<T> nil = new BTNode<>();
+			BSTNode<T> nil = new BSTNode<>();
 			nil.setParent(aux);
 			aux.setLeft(nil);
 		}
