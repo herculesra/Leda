@@ -19,14 +19,14 @@ public class BSTImpl<T extends Comparable<T>> implements BST<T> {
 
    @Override
    public int height() {
-      return getHeightTree(root)-1;
+      return height(root);
    }
 
-   protected int getHeightTree(BSTNode<T> node) {
+   protected int height(BSTNode<T> node) {
       if (node == null || node.isEmpty()) {
-         return 0;
+         return -1;
       } else {
-         return 1 + Math.max(getHeightTree((BSTNode<T>) node.getLeft()), getHeightTree((BSTNode<T>) node.getRight()));
+         return 1 + Math.max(height((BSTNode<T>) node.getLeft()), height((BSTNode<T>) node.getRight()));
       }
    }
 
