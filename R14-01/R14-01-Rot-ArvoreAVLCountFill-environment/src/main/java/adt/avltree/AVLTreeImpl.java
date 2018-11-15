@@ -1,5 +1,7 @@
 package adt.avltree;
 
+import java.util.Arrays;
+
 import adt.bst.BSTImpl;
 import adt.bst.BSTNode;
 import adt.bt.Util;
@@ -22,7 +24,7 @@ public class AVLTreeImpl<T extends Comparable<T>> extends BSTImpl<T> implements
 	protected int calculateBalance(BSTNode<T> node) {
 		int result = 0;
 		if(!node.isEmpty()) {
-			result = getHeightTree((BSTNode<T>) node.getLeft()) - getHeightTree((BSTNode<T>) node.getRight()); 
+			result = height((BSTNode<T>) node.getLeft()) - height((BSTNode<T>) node.getRight()); 
 		}
 		return result;
 	}
@@ -30,37 +32,44 @@ public class AVLTreeImpl<T extends Comparable<T>> extends BSTImpl<T> implements
 	// AUXILIARY
 	protected void rebalance(BSTNode<T> node) {
 		int balance = calculateBalance(node);
+
 		if(Math.abs(balance) > 1) {
-			if(balance > 0 && !node.getLeft().getLeft().isEmpty()) { // pesando para esquerda(CASO LL). Rotacao para direita 
-				BSTNode<T> aux = Util.rightRotation(node);
-				if(node == root) {
-					root = aux;
-				}
-			}else {
-				if(balance < 0 && !node.getRight().getRight().isEmpty()) { // pesando para direta(CASO RR). Rotacao para esquerda
-					BSTNode<T> aux = Util.leftRotation(node);	
-					if(node == root) {
-						root = aux;
-					}
-				}else {
-					if(balance > 0 && node.getLeft().getLeft().isEmpty() && !node.getLeft().getRight().isEmpty()) { 
-						// pesando para esquerda(CASO LR). Rotacao para esquerda no filho e rotacao para direita no pai
-						node.setLeft(Util.leftRotation((BSTNode<T>) node.getLeft()));
-						BSTNode<T> aux = Util.rightRotation(node);
-						if(node == root) {
-							root = aux;
-						}
+			int fb = calculateBalance(node);
+			if(Math.abs(fb) > 1) {
+				boolean rotacionNode = fb < 0; // HEAVYCHILD IN RIGHT CHILD INDICATE TRUE
+				// ELSE HEAVY IN LEFT CHILD INDICATE FALSE
+				boolean rotacionSimple; 	   // SIMPLE INDICATE TRUE
+				// DUPLE INDICATE FALSE
+				boolean rotacionRR = rotacionNode && node.getRight() != null && calculateBalance((BSTNode<T>)node.getRight()) <= 0;
+				boolean rotacionLL = !rotacionNode && node.getLeft() != null && calculateBalance((BSTNode<T>)node.getLeft()) >= 0;
+				rotacionSimple = rotacionRR || rotacionLL;
+
+				BSTNode<T> newNode;
+				if(rotacionSimple) { // SIMPLE ROTATION
+					if(rotacionNode) {
+						newNode = Util.leftRotation(node);
+					}else
+						newNode = Util.rightRotation(node);
+				}else {	// DUPLE ROTATION
+					if(rotacionNode) {
+						node.setRight(Util.rightRotation((BSTNode<T>) node.getRight()));
+						newNode = Util.leftRotation(node);
 					}else {
-						if(balance < 0 && node.getRight().getRight().isEmpty() && !node.getRight().getLeft().isEmpty()) {
-							// pesando para direita (Caso RL). Rotacao para direita no filho e rotacao para esquerda no pai
-							node.setRight(Util.rightRotation((BSTNode<T>) node.getRight()));
-							BSTNode<T> aux = Util.leftRotation(node);	
-							if(node == root) {
-								root = aux;
-							}
-						}
+						node.setLeft(Util.leftRotation((BSTNode<T>) node.getLeft()));
+						newNode = Util.rightRotation(node);
 					}
-				}	
+				}
+				if(node == getRoot()) {
+					root = newNode;
+					newNode.setParent(null);
+				}else {
+					boolean child = newNode.getParent().getRight() == node; // NEWNODE IS RIGHT CHILD
+					// ELSE NEWNODE IS LEFT CHILD
+					if(child)
+						newNode.getParent().setRight(newNode);
+					else
+						newNode.getParent().setLeft(newNode);
+				}
 			}
 		}
 	}
@@ -68,11 +77,9 @@ public class AVLTreeImpl<T extends Comparable<T>> extends BSTImpl<T> implements
 	// AUXILIARY
 	protected void rebalanceUp(BSTNode<T> node) {
 		BSTNode<T> parent = (BSTNode<T>) node.getParent();
-		//int balance = calculateBalance((BSTNode<T>) node.getParent());
-		while(parent != null) { //&& Math.abs(balance) > 1) {
+		while(parent != null) { 
 			rebalance(parent);
 			parent = (BSTNode<T>) parent.getParent();
-			//balance = Math.abs(calculateBalance(parent));
 		}
 	}
 	
@@ -160,6 +167,21 @@ public class AVLTreeImpl<T extends Comparable<T>> extends BSTImpl<T> implements
 				remove(sucessor);
 			}
 		}
+	}
+	
+	public static void main(String[] args) {
+		AVLTreeImpl<Integer> avl = new AVLTreeImpl<>();
+		System.out.println(avl.isEmpty());
+		avl.insert(0);
+		avl.insert(1);
+		avl.insert(2);
+		avl.insert(3);
+		avl.insert(4);
+		avl.insert(5);
+		System.out.println(avl.size());
+		System.out.println(avl.height());
+		System.out.println(Arrays.toString(avl.order()));
+		
 	}
 
 }

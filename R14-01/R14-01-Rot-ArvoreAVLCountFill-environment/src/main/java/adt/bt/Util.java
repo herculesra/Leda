@@ -11,15 +11,17 @@ public class Util {
 	 * @return
 	 */
 	public static <T extends Comparable<T>> BSTNode<T> leftRotation(BSTNode<T> node) {
-		BSTNode<T> pivot = (BSTNode<T>) node.getRight();
-		pivot.setParent((BSTNode<T>) node.getParent());
-		BSTNode<T> aux = node;
+		BSTNode<T> aux = new BSTNode<T>();
+		aux.setData(node.getData());
+		aux.setLeft(node.getLeft());
+		aux.setRight(node.getRight());
+		aux.setParent(node.getParent());
+		BSTNode<T> pivot = (BSTNode<T>) aux.getRight();
+		pivot.setParent((BSTNode<T>) aux.getParent());
 		if(!pivot.getLeft().isEmpty()){
 			aux.setRight(pivot.getLeft());
 		}else {
-			BSTNode<T> nil = new BSTNode<>();
-			nil.setParent(aux);
-			aux.setRight(nil);
+			aux.setRight(new BSTNode<T>());
 		}
 		pivot.setLeft(aux);
 		aux.setParent(pivot);
