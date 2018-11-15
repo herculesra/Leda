@@ -42,28 +42,37 @@ public class AVLCountAndFillImpl<T extends Comparable<T>> extends AVLTreeImpl<T>
          sort(array, 0, array.length - 1);
          T[] arrayOrder = order().clone();
          cleanTree();
-         insertBinaryForm(merge(array, arrayOrder));
+         insertBinaryForm(merge(array, arrayOrder), true, true);
       }
    }
 
-   private void insertBinaryForm(T[] arrayOrder) {
+
+private void insertBinaryForm(T[] arrayOrder, boolean direitoInserido, boolean esquerdoInserido) {
       if (arrayOrder.length <= 1) {
          insert(arrayOrder[0]);
       } else {
          int meio = (arrayOrder.length / 2);
          insert(arrayOrder[meio]);
-         T[] newArray1 = (T[]) new Comparable[arrayOrder.length - (meio + 1)];
-         for (int i = 0; i < meio; i++) {
-            newArray1[i] = arrayOrder[i];
+         if(!esquerdoInserido) {
+        	 esquerdoInserido = true;
+        	 direitoInserido = false;
+        	 T[] newArray1 = (T[]) new Comparable[arrayOrder.length - (meio + 1)];
+        	 for (int i = 0; i < meio; i++) {
+        		 newArray1[i] = arrayOrder[i];
+        	 }
+        	 insertBinaryForm(newArray1, direitoInserido, esquerdoInserido);
          }
-         insertBinaryForm(newArray1);
-         T[] newArray2 = (T[]) new Comparable[arrayOrder.length - (meio + 1)];
-         int j = 0;
-         for (int i = meio + 1; i < arrayOrder.length; i++) {
-            newArray2[j] = arrayOrder[i];
-            j++;
+         if(!direitoInserido) {
+        	 direitoInserido = true;
+        	 esquerdoInserido = false;
+        	 T[] newArray2 = (T[]) new Comparable[arrayOrder.length - (meio + 1)];
+        	 int j = 0;
+        	 for (int i = meio + 1; i < arrayOrder.length; i++) {
+        		 newArray2[j] = arrayOrder[i];
+        		 j++;
+        	 }
+        	 insertBinaryForm(newArray2, direitoInserido, esquerdoInserido);
          }
-         insertBinaryForm(newArray2);
       }
 
    }
