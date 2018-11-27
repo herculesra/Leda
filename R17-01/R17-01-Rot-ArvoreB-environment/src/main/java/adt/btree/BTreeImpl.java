@@ -22,50 +22,137 @@ public class BTreeImpl<T extends Comparable<T>> implements BTree<T> {
 
 	@Override
 	public int height() {
-		return height(this.root);
+		return isEmpty() ? -1 : height(this.root) - 1;
 	}
 
 	private int height(BNode<T> node) {
-		// TODO Implement your code here
-		throw new UnsupportedOperationException("Not Implemented yet!");
+		if (node.isLeaf())
+			return 0;
+		return 1 + height(node.getChildren().getFirst());
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public BNode<T>[] depthLeftOrder() {
-		// TODO Implement your code here
-		throw new UnsupportedOperationException("Not Implemented yet!");
+		BNode<T>[] array = new BNode[this.countNodes()];
+
+		depthLeftOrder(array, 0, this.root);
+
+		return array;
+	}
+
+	private int depthLeftOrder(BNode<T> array[], int index, BNode<T> node) {
+		if (!node.isEmpty()) {
+			array[index++] = node;
+			for (int i = 0; i < node.children.size(); i++) {
+				index = depthLeftOrder(array, index, node.children.get(i));
+			}
+		}
+		return index;
 	}
 
 	@Override
 	public int size() {
-		// TODO Implement your code here
-		throw new UnsupportedOperationException("Not Implemented yet!");
+		return size(this.root);
+	}
+
+	public int size(BNode<T> node) {
+		if (node.isEmpty())
+			return 0;
+
+		int total = node.size();
+
+		for (int i = 0; i < node.children.size(); i++) {
+			total += size(node.children.get(i));
+		}
+
+		return total;
+	}
+
+	public int countNodes() {
+		return countNodes(this.root);
+	}
+
+	private int countNodes(BNode<T> node) {
+		if (node.isEmpty())
+			return 0;
+		int total = 1;
+		for (int i = 0; i < node.children.size(); i++) {
+			total += countNodes(node.children.get(i));
+		}
+		return total;
 	}
 
 	@Override
 	public BNodePosition<T> search(T element) {
-		// TODO Implement your code here
-		throw new UnsupportedOperationException("Not Implemented yet!");
+		if (element == null)
+			return new BNodePosition<T>();
+
+		return search(root, element);
+	}
+
+	private BNodePosition<T> search(BNode<T> node, T element) {
+		int index = 0;
+
+		while (index < node.getElements().size() && element.compareTo(node.getElementAt(index)) > 0) {
+			index++;
+		}
+
+		if (index < node.getElements().size() && element.compareTo(node.getElementAt(index)) == 0)
+			return new BNodePosition<T>(node, index);
+
+		if (node.isLeaf())
+			return new BNodePosition<T>();
+
+		return search(node.getChildren().get(index), element);
 	}
 
 	@Override
 	public void insert(T element) {
-		// TODO Implement your code here
-		throw new UnsupportedOperationException("Not Implemented yet!");
+		if (element == null)
+			return;
 
+		insert(root, element);
 	}
 
+	private void insert(BNode<T> node, T element) {
+		int index = 0;
+
+		while (index < node.getElements().size() && element.compareTo(node.getElementAt(index)) > 0) {
+			index++;
+		}
+
+		if (node.isLeaf()) {
+			node.addElement(element);
+			node.addChild(index, new BNode<T>(this.order));
+
+			if (node.size() > node.getMaxKeys()) {
+				node.split();
+
+				// atualiza o root
+				while (node.parent != null) {
+					node = node.parent;
+				}
+
+				this.root = node;
+			}
+		} else {
+			insert(node.getChildren().get(index), element);
+		}
+	}
+
+	@SuppressWarnings("unused")
 	private void split(BNode<T> node) {
-		// TODO Implement your code here
-		throw new UnsupportedOperationException("Not Implemented yet!");
+		node.split();
 	}
 
+	@SuppressWarnings("unused")
 	private void promote(BNode<T> node) {
-		// TODO Implement your code here
-		throw new UnsupportedOperationException("Not Implemented yet!");
+		node.promote((node.size() - 1) / 2);
 	}
 
 	// NAO PRECISA IMPLEMENTAR OS METODOS ABAIXO
+
 	@Override
 	public BNode<T> maximum(BNode<T> node) {
 		// NAO PRECISA IMPLEMENTAR

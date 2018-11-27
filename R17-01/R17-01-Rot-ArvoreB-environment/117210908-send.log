@@ -7,3 +7,13 @@
   <level>FINE</level>
   <message>File 117210908-HERCULES RODRIGUES ANSELMO.zip was received. It was sent by HERCULES RODRIGUES ANSELMO from IP 150.165.74.109</message>
 </record>
+</log>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE log SYSTEM "logger.dtd">
+<log>
+<record>
+  <date>2018-11-27T16:25:56.393-0300</date>
+  <logger>HERCULES RODRIGUES ANSELMO</logger>
+  <level>FINE</level>
+  <message>File 117210908-HERCULES RODRIGUES ANSELMO.zip was received. It was sent by HERCULES RODRIGUES ANSELMO from IP 150.165.74.109</message>
+</record>
