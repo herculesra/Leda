@@ -19,14 +19,14 @@ public class BSTImpl<T extends Comparable<T>> implements BST<T> {
 
    @Override
    public int height() {
-      return getHeightTree(root);
+      return height(root);
    }
 
-   private int getHeightTree(BSTNode<T> node) {
+   private int height(BSTNode<T> node) {
       if (node.isEmpty()) {
          return -1;
       } else {
-         return 1 + Math.max(getHeightTree((BSTNode<T>) node.getLeft()), getHeightTree((BSTNode<T>) node.getRight()));
+         return 1 + Math.max(height((BSTNode<T>) node.getLeft()), height((BSTNode<T>) node.getRight()));
       }
    }
 
@@ -301,4 +301,23 @@ public class BSTImpl<T extends Comparable<T>> implements BST<T> {
       }
       return result;
    }
+   
+   //estudando prova...
+//   public int countLeaf() {
+//	   return countLeaf(root);
+//   }
+//
+//   private int countLeaf(BSTNode<T> node) {
+//	   int result = 0;
+//	   if(!node.isEmpty()) {
+//		   if(node.isLeaf()) {
+//			   result ++;
+//		   }else {
+//			   result = countLeaf((BSTNode<T>) node.getLeft()) + countLeaf((BSTNode<T>) node.getRight());
+//		   }
+//	   }
+//	   return result;
+//   }
+   
+   
 }
