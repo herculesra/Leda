@@ -1,5 +1,7 @@
 package adt.bst;
 
+import java.util.Arrays;
+
 public class BSTImpl<T extends Comparable<T>> implements BST<T> {
 
    protected BSTNode<T> root;
@@ -319,5 +321,34 @@ public class BSTImpl<T extends Comparable<T>> implements BST<T> {
 //	   return result;
 //   }
    
-   
+   public BSTNode<T> sucessor_2(T element){
+	   BSTNode<T> aux = search(element);
+	   if(!aux.isEmpty()) {
+		   if(!aux.getRight().isEmpty()) {
+			   aux = minimum((BSTNode<T>) aux.getRight());
+		   }else {
+			   BSTNode<T> pai = (BSTNode<T>) aux.getParent();
+			   while(pai != null) {
+				   aux = pai;
+				   pai = (BSTNode<T>) pai.getParent();
+			   }
+		   }		   
+	   }else {
+		   aux = null;
+	   }
+	   return aux;
+   }
+   public static void main(String[] args) {
+	BSTImpl<Integer> tree = new BSTImpl<>();
+	tree.insert(30);
+	tree.insert(19);
+	tree.insert(31);
+	
+	
+	System.out.println(Arrays.toString(tree.preOrder()));
+	
+	System.out.println(tree.sucessor_2(30).getData());
+	System.out.println(tree.sucessor_2(26));
+	
+}
 }
